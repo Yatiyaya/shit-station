@@ -56,9 +56,9 @@
 	range_telegraph = "starts to push out its stinger, orienting it towards "
 	bones_amount = 0
 	inherent_mutations = list(MUTATION_BLOOD_BANK, MUTATION_SEASONED_MIND, MUTATION_SHOCK_LESS)
-	var/poison_per_bite = 3
-	var/poison_type = "wasp_toxin"
-
+	poison_per_bite = 3
+	poison_type = "wasp_toxin"
+/*
 /mob/living/carbon/superior_animal/vox/wasp/UnarmedAttack(atom/A, proximity)
 	. = ..()
 	if(!.)
@@ -72,7 +72,7 @@
 				var/zone_armor =  L.getarmor(targeted_organ, ARMOR_MELEE)
 				var/poison_injected = zone_armor ? poison_per_bite * (-0.01 * zone_armor + 1) : poison_per_bite
 				L.reagents.add_reagent(poison_type, poison_injected)
-
+*/
 /mob/living/carbon/superior_animal/vox/wasp/death(message = deathmessage)
 	..()
 	if(!dropped_goods)

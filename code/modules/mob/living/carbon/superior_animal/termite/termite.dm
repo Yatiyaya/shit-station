@@ -104,7 +104,7 @@ GLOBAL_LIST_INIT(termites_special, list(/mob/living/carbon/superior_animal/termi
 	// Poof
 	qdel(src)
 
-/mob/living/carbon/superior_animal/termite/destroySurroundings()
+/mob/living/carbon/superior_animal/termite/DestroySurroundings()
 	// Get next turf the golem wants to walk on
 	var/atom/targetted_mob = (target_mob?.resolve())
 	var/turf/T = get_step_towards(src, targetted_mob)

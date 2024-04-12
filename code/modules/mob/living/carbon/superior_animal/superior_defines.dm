@@ -301,3 +301,127 @@
 	 * final offset of the projectile. Make sure to sync with initial_firing_offset.
 	**/
 	var/current_firing_offset = 2
+
+	//Testing implimentations of natural weaponry, instead of janky stats
+
+		//hostile mobs will bash through these in order with their natural weapon
+	var/list/valid_obstacles_by_priority = list(/obj/structure/window,
+												/obj/structure/closet,
+												/obj/machinery/door/window,
+												/obj/structure/table,
+												/obj/structure/grille,
+												/obj/structure/barricade,
+												/obj/structure/girder,
+												/obj/structure/railing)
+
+	var/can_pry = TRUE
+//time it takes for mob to pry open a door. Scales off var/destroy_hits for /obj/machinery/door. Defaults to 7 seconds
+	var/pry_time = 7 SECONDS
+	var/pry_desc = "prying" //"X begins pry_desc the door!"
+
+	//What kind of weapon do they use? SET THIS OR DIE HORRIBLY//
+	var/obj/item/natural_weapon/natural_weapon = /obj/item/natural_weapon
+	// Is everything they use, poisonous? If no, set it natural_weapon //
+	var/poison_per_bite = 0
+	var/poison_type = ""
+
+	var/friendly = "nuzzles"
+
+/mob/living/carbon/superior_animal/Destroy()
+	if(istype(natural_weapon))
+		QDEL_NULL(natural_weapon)
+	. = ..()
+	//But don't give it to people. Unless... Carving weapons off mobs?
+
+/obj/item/natural_weapon
+	name = "natural weapons"
+	gender = PLURAL
+	attack_verb = list("attacked")
+	force = 0
+	damtype = BRUTE
+	canremove = FALSE
+	siemens_coefficient = 1			//Set to a default of 1, gets overridden in New()
+	permeability_coefficient = 0.05
+	var/show_in_message   // whether should we show up in attack message, e.g. 'urist has been bit with teeth by carp' vs 'urist has been bit by carp'
+
+/obj/item/natural_weapon/New(loc, ...)
+	. = ..()
+	//average of 0.5, somewhat better than regular gloves' 0.75
+	siemens_coefficient = pick(0,0.1,0.3,0.5,0.5,0.75,1.35)
+
+/obj/item/natural_weapon/attack_message_name()
+	return show_in_message ? ..() : null
+/*
+/obj/item/natural_weapon/can_embed()
+	return FALSE
+*/
+/obj/item/natural_weapon/bite
+	name = "teeth"
+	attack_verb = list("bitten")
+	hitsound = 'sound/weapons/bite.ogg'
+	force = 10
+	sharp = TRUE
+
+/obj/item/natural_weapon/bite/weak
+	force = 5
+	attack_verb = list("bitten", "nipped")
+
+/obj/item/natural_weapon/bite/mouse
+	force = 1
+	attack_verb = list("nibbled")
+	hitsound = null
+
+/obj/item/natural_weapon/bite/strong
+	force = 20
+
+/obj/item/natural_weapon/claws
+	name = "claws"
+	attack_verb = list("mauled", "clawed", "slashed")
+	force = 10
+	sharp = TRUE
+	edge = TRUE
+
+/obj/item/natural_weapon/claws/strong
+	force = 25
+
+/obj/item/natural_weapon/claws/weak
+	force = 5
+	attack_verb = list("clawed", "scratched")
+
+/obj/item/natural_weapon/hooves
+	name = "hooves"
+	attack_verb = list("kicked")
+	force = 5
+
+/obj/item/natural_weapon/punch
+	name = "fists"
+	attack_verb = list("punched")
+	force = 10
+
+/obj/item/natural_weapon/pincers
+	name = "pincers"
+	force = 5
+	attack_verb = list("snipped", "pinched")
+
+/obj/item/natural_weapon/drone_slicer
+	name = "sharpened leg"
+	gender = NEUTER
+	attack_verb = list("sliced")
+	force = 5
+	damtype = BRUTE
+	edge = TRUE
+	show_in_message = TRUE
+
+/obj/item/natural_weapon/beak
+	name = "beak"
+	gender = NEUTER
+	attack_verb = list("pecked", "jabbed", "poked")
+	force = 5
+	sharp = TRUE
+
+/obj/item/natural_weapon/large
+	force = 15
+
+/obj/item/natural_weapon/giant
+	force = 30
+

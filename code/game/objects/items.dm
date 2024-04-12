@@ -704,3 +704,6 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 	attack_verb = alt_mode_verbs
 	sharp = alt_mode_sharp
 	flags |= NOBLOODY
+
+/obj/item/proc/attack_message_name()
+	return "\a [src]"
